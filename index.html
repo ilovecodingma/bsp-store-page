@@ -5,75 +5,17 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>BSP 리빗 스토어</title>
 <style>
-  :root { --bg:#f6f7f9; --card:#fff; --line:#dfe3e8; --ink:#1b1f24; --dim:#6b7280; --ok:#0a7c42; }
-  * { box-sizing:border-box; }
-  body { margin:0; background:var(--bg); color:var(--ink); font-family:"Malgun Gothic",sans-serif;
-         font-size:16px; line-height:1.7; }
-  .wrap { max-width:600px; margin:0 auto; padding:48px 16px 60px; }
-  h1 { font-size:27px; margin:0 0 6px; text-align:center; }
-  .sub { color:var(--dim); margin:0 0 28px; text-align:center; }
-  .card { background:var(--card); border:1px solid var(--line); border-radius:12px;
-          padding:28px 24px; margin-bottom:16px; }
-  a.dl { display:block; padding:18px; font-size:20px; font-weight:700; background:#1b56d3;
-         color:#fff; border-radius:10px; text-decoration:none; text-align:center; }
-  a.dl.off { background:#9aa5b1; pointer-events:none; }
-  .meta { color:var(--dim); font-size:13px; margin-top:12px; text-align:center; word-break:break-all; }
-  ol { margin:24px 0 0; padding-left:22px; } li { margin:7px 0; }
-  h2 { font-size:15px; margin:0 0 10px; color:var(--dim); font-weight:700; }
-  a.go { display:inline-block; padding:11px 16px; border:1px solid #1b56d3; color:#1b56d3;
-         border-radius:8px; text-decoration:none; font-weight:700; margin-right:8px; }
-  a.go.off { border-color:var(--line); color:#9aa5b1; pointer-events:none; }
-  .note { color:var(--dim); font-size:13px; margin-top:12px; }
+  body { margin:0; background:#f6f7f9; color:#1b1f24; font-family:"Malgun Gothic",sans-serif;
+         display:flex; align-items:center; justify-content:center; height:100vh; }
+  .box { text-align:center; }
+  h1 { font-size:22px; margin:0 0 8px; font-weight:700; }
+  p { color:#6b7280; margin:0; }
 </style>
 </head>
 <body>
-<div class="wrap">
-  <h1>BSP 리빗 스토어</h1>
-  <p class="sub">받아서 풀고, 안에 있는 <b>설치.bat</b> 을 두 번 누르면 끝입니다.</p>
-
-  <div class="card">
-    <a class="dl off" id="dl" href="#">준비 중…</a>
-    <div class="meta" id="meta"></div>
-    <ol>
-      <li>받은 파일을 풀어 주세요 (오른쪽 버튼 → 압축 풀기)</li>
-      <li>안에 있는 <b>설치.bat</b> 을 두 번 누르세요</li>
-      <li>리빗을 껐다 켜면 도구가 들어와 있습니다</li>
-    </ol>
+  <div class="box">
+    <h1>BSP 리빗 스토어</h1>
+    <p>준비 중입니다.</p>
   </div>
-
-  <div class="card">
-    <h2>도구를 올리는 분만</h2>
-    <a class="go off" id="up" href="#">올리기</a>
-    <a class="go off" id="pd" href="#">올라온 것 보기</a>
-    <div class="note" id="srv"></div>
-  </div>
-</div>
-
-<script>
-// ★ 밖으로 나가는 파일 이름은 **영문**이다 [총괄 2026-09-22].
-//   한글 이름은 브라우저는 알아서 넘기지만 명령줄·다른 도구가 부를 때 404 가 난다(실측).
-fetch('address.json?t=' + Date.now()).then(r => r.json()).then(d => {
-  const a = document.getElementById('dl'), m = document.getElementById('meta');
-  if (d['설치본']) {
-    a.className = 'dl'; a.href = d['설치본']; a.textContent = '받기';
-    m.textContent = d['설치본'].split('/').pop() +
-                    (d['설치본크기'] ? ' · ' + Math.round(d['설치본크기'] / 1024) + ' KB' : '') +
-                    (d['설치본시각'] ? ' · ' + d['설치본시각'] : '');
-  } else { a.textContent = '아직 준비 중입니다'; }
-
-  const s = (d['서버'] || '').replace(/\/$/, '');
-  const up = document.getElementById('up'), pd = document.getElementById('pd'),
-        srv = document.getElementById('srv');
-  if (s) {
-    up.className = 'go'; up.href = s + (d['올리는주소'] || '/submit');
-    pd.className = 'go'; pd.href = s + (d['대기주소'] || '/pending');
-    srv.textContent = '지금 서버 : ' + s + (d['서버확인시각'] ? ' (' + d['서버확인시각'] + ' 확인)' : '');
-  } else {
-    srv.textContent = '지금은 서버가 떠 있지 않습니다. 받기는 위에서 그대로 됩니다.';
-  }
-}).catch(() => {
-  document.getElementById('meta').textContent = '잠시 뒤 다시 열어 주세요.';
-});
-</script>
 </body>
 </html>
